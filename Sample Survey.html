@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project EV Pulse Canada: Consumer Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .form-question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #111827;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+        .radio-label, .checkbox-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .radio-label:hover, .checkbox-label:hover {
+            background-color: #f9fafb;
+        }
+        input[type="radio"]:checked + .radio-label,
+        input[type="checkbox"]:checked + .checkbox-label {
+            background-color: #eff6ff;
+            border-color: #2563eb;
+        }
+        input[type="radio"], input[type="checkbox"] {
+           display: none;
+        }
+        .radio-dot, .checkbox-tick {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s;
+        }
+        .checkbox-tick {
+            border-radius: 0.25rem;
+        }
+        input[type="radio"]:checked + .radio-label .radio-dot {
+            border-color: #2563eb;
+        }
+        input[type="radio"]:checked + .radio-label .radio-dot::after {
+            content: '';
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background-color: #2563eb;
+        }
+        input[type="checkbox"]:checked + .checkbox-label .checkbox-tick {
+             border-color: #2563eb;
+             background-color: #2563eb;
+        }
+         input[type="checkbox"]:checked + .checkbox-label .checkbox-tick::after {
+            content: '✓';
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        .likert-scale .radio-label {
+            margin-bottom: 0;
+            padding: 0.5rem;
+            border: none;
+            justify-content: center;
+            flex-grow: 1;
+        }
+         .likert-scale .radio-label:hover {
+            background-color: #f0f0f0;
+         }
+        .likert-scale input[type="radio"]:checked + .radio-label {
+            background-color: #eff6ff;
+        }
+        #submission-display {
+            background-color: #1f2937;
+            color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <div class="container mx-auto max-w-2xl p-4 sm:p-6 lg:p-8">
+        <div class="bg-white p-6 rounded-xl shadow-sm mb-6 border border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">Project EV Pulse Canada</h1>
+            <p class="text-gray-600 mt-2">Thank you for participating in this important survey about the future of automobiles in Canada. Your feedback will help automakers and policymakers better understand the needs and preferences of Canadian drivers. The survey should take approximately 10-15 minutes to complete.</p>
+        </div>
+
+        <form id="ev-survey-form">
+            <!-- Module A: Screener & Respondent Profile -->
+            <div class="form-question">
+                <label for="q1" class="form-label">Q1: Are you planning to purchase or lease a new vehicle for personal use within the next 24 months?</label>
+                <input type="radio" name="q1" value="yes" id="q1_yes"><label for="q1_yes" class="radio-label"><span class="radio-dot"></span>Yes</label>
+                <input type="radio" name="q1" value="no" id="q1_no"><label for="q1_no" class="radio-label"><span class="radio-dot"></span>No</label>
+            </div>
+
+            <div class="form-question">
+                <label for="q2" class="form-label">Q2: In which province or territory do you currently reside?</label>
+                <select name="q2" id="q2" class="form-select">
+                    <option value="">Select...</option>
+                    <option value="AB">Alberta</option>
+                    <option value="BC">British Columbia</option>
+                    <option value="MB">Manitoba</option>
+                    <option value="NB">New Brunswick</option>
+                    <option value="NL">Newfoundland and Labrador</option>
+                    <option value="NS">Nova Scotia</option>
+                    <option value="ON">Ontario</option>
+                    <option value="PE">Prince Edward Island</option>
+                    <option value="QC">Quebec</option>
+                    <option value="SK">Saskatchewan</option>
+                    <option value="NT">Northwest Territories</option>
+                    <option value="NU">Nunavut</option>
+                    <option value="YT">Yukon</option>
+                </select>
+            </div>
+
+            <div class="form-question">
+                <label class="form-label">Q3: Which of the following best describes your primary residence and parking situation?</label>
+                <input type="radio" name="q3" value="a" id="q3_a"><label for="q3_a" class="radio-label"><span class="radio-dot"></span>Single-family home with a private driveway and/or garage</label>
+                <input type="radio" name="q3" value="b" id="q3_b"><label for="q3_b" class="radio-label"><span class="radio-dot"></span>Townhouse or duplex with assigned/private parking</label>
+                <input type="radio" name="q3" value="c" id="q3_c"><label for="q3_c" class="radio-label"><span class="radio-dot"></span>Apartment or condominium with access to assigned or deeded parking</label>
+                <input type="radio" name="q3" value="d" id="q3_d"><label for="q3_d" class="radio-label"><span class="radio-dot"></span>Apartment or condominium with access to shared parking (first-come, first-served)</label>
+                <input type="radio" name="q3" value="e" id="q3_e"><label for="q3_e" class="radio-label"><span class="radio-dot"></span>Apartment or condominium with no dedicated off-street parking available</label>
+                <input type="radio" name="q3" value="f" id="q3_f"><label for="q3_f" class="radio-label"><span class="radio-dot"></span>Other</label>
+            </div>
+
+            <div class="form-question">
+                <label class="form-label">Q4: Please indicate your approximate total annual household income before taxes.</label>
+                <input type="radio" name="q4" value="a" id="q4_a"><label for="q4_a" class="radio-label"><span class="radio-dot"></span>Under $50,000</label>
+                <input type="radio" name="q4" value="b" id="q4_b"><label for="q4_b" class="radio-label"><span class="radio-dot"></span>$50,000 to $74,999</label>
+                <input type="radio" name="q4" value="c" id="q4_c"><label for="q4_c" class="radio-label"><span class="radio-dot"></span>$75,000 to $99,999</label>
+                <input type="radio" name="q4" value="d" id="q4_d"><label for="q4_d" class="radio-label"><span class="radio-dot"></span>$100,000 to $149,999</label>
+                <input type="radio" name="q4" value="e" id="q4_e"><label for="q4_e" class="radio-label"><span class="radio-dot"></span>$150,000 to $199,999</label>
+                <input type="radio" name="q4" value="f" id="q4_f"><label for="q4_f" class="radio-label"><span class="radio-dot"></span>$200,000 or more</label>
+                <input type="radio" name="q4" value="g" id="q4_g"><label for="q4_g" class="radio-label"><span class="radio-dot"></span>Prefer not to say</label>
+            </div>
+
+            <!-- Module B: Current Vehicle & Usage Profile -->
+            <div class="form-question">
+                <label class="form-label">Q5: What is the make, model, and model year of the primary vehicle you currently own or lease? (e.g., 2021 Toyota RAV4)</label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <input type="text" name="q5_make" placeholder="Make" class="form-input">
+                    <input type="text" name="q5_model" placeholder="Model" class="form-input">
+                    <input type="number" name="q5_year" placeholder="Year" class="form-input" min="1950" max="2025">
+                </div>
+            </div>
+
+            <div class="form-question">
+                <label for="q6" class="form-label">Q6: On a typical weekday (e.g., Monday-Friday), approximately how many kilometers do you drive in total?</label>
+                <input type="number" name="q6" id="q6" class="form-input" placeholder="e.g., 50" min="0">
+            </div>
+
+            <div class="form-question">
+                <label class="form-label">Q7: Thinking about your driving habits over a full year, how often do you typically take road trips over 400 kilometers (one way) where your personal vehicle is the primary mode of transportation?</label>
+                <input type="radio" name="q7" value="a" id="q7_a"><label for="q7_a" class="radio-label"><span class="radio-dot"></span>Never</label>
+                <input type="radio" name="q7" value="b" id="q7_b"><label for="q7_b" class="radio-label"><span class="radio-dot"></span>1-2 times per year</label>
+                <input type="radio" name="q7" value="c" id="q7_c"><label for="q7_c" class="radio-label"><span class="radio-dot"></span>3-5 times per year</label>
+                <input type="radio" name="q7" value="d" id="q7_d"><label for="q7_d" class="radio-label"><span class="radio-dot"></span>6-10 times per year</label>
+                <input type="radio" name="q7" value="e" id="q7_e"><label for="q7_e" class="radio-label"><span class="radio-dot"></span>More than 10 times per year</label>
+            </div>
+            
+            <!-- Module C: EV Perceptions & Consideration -->
+             <div class="form-question">
+                <label class="form-label">Q8: When thinking about your next new vehicle purchase, how likely are you to seriously consider an all-electric vehicle (EV)?</label>
+                <input type="radio" name="q8" value="very_unlikely" id="q8_1"><label for="q8_1" class="radio-label"><span class="radio-dot"></span>1 - Very Unlikely</label>
+                <input type="radio" name="q8" value="somewhat_unlikely" id="q8_2"><label for="q8_2" class="radio-label"><span class="radio-dot"></span>2 - Somewhat Unlikely</label>
+                <input type="radio" name="q8" value="neutral" id="q8_3"><label for="q8_3" class="radio-label"><span class="radio-dot"></span>3 - Neutral</label>
+                <input type="radio" name="q8" value="somewhat_likely" id="q8_4"><label for="q8_4" class="radio-label"><span class="radio-dot"></span>4 - Somewhat Likely</label>
+                <input type="radio" name="q8" value="very_likely" id="q8_5"><label for="q8_5" class="radio-label"><span class="radio-dot"></span>5 - Very Likely</label>
+            </div>
+
+            <div class="form-question">
+                 <label for="q9" class="form-label" id="q9_label">Q9: You indicated you are neutral to consider an all-electric vehicle. In your own words, what are the main reasons for your answer?</label>
+                <textarea name="q9" id="q9" rows="4" class="form-textarea" placeholder="Please provide your reasons..."></textarea>
+            </div>
+
+             <div class="form-question">
+                <label class="form-label">Q10: To what extent do you agree or disagree with the following statements about all-electric vehicles (EVs)?</label>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3 px-4">Statement</th>
+                                <th scope="col" class="py-3 px-2 text-center w-1/6">Strongly Disagree</th>
+                                <th scope="col" class="py-3 px-2 text-center w-1/6">Disagree</th>
+                                <th scope="col" class="py-3 px-2 text-center w-1/6">Neutral</th>
+                                <th scope="col" class="py-3 px-2 text-center w-1/6">Agree</th>
+                                <th scope="col" class="py-3 px-2 text-center w-1/6">Strongly Agree</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Row 1 -->
+                            <tr class="bg-white border-b">
+                                <td class="py-4 px-4 font-medium text-gray-900">EVs are still too expensive compared to similar gasoline vehicles.</td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_a" value="1" id="q10_a_1"><label for="q10_a_1" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_a" value="2" id="q10_a_2"><label for="q10_a_2" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_a" value="3" id="q10_a_3"><label for="q10_a_3" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_a" value="4" id="q10_a_4"><label for="q10_a_4" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_a" value="5" id="q10_a_5"><label for="q10_a_5" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                            </tr>
+                             <!-- Row 2 -->
+                             <tr class="bg-white border-b">
+                                <td class="py-4 px-4 font-medium text-gray-900">I am concerned about an EV's driving range, especially during Canadian winters.</td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_b" value="1" id="q10_b_1"><label for="q10_b_1" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_b" value="2" id="q10_b_2"><label for="q10_b_2" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_b" value="3" id="q10_b_3"><label for="q10_b_3" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_b" value="4" id="q10_b_4"><label for="q10_b_4" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_b" value="5" id="q10_b_5"><label for="q10_b_5" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                            </tr>
+                            <!-- Row 3 -->
+                             <tr class="bg-white border-b">
+                                <td class="py-4 px-4 font-medium text-gray-900">Public charging stations in my area and on routes I travel are not numerous or reliable enough.</td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_c" value="1" id="q10_c_1"><label for="q10_c_1" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_c" value="2" id="q10_c_2"><label for="q10_c_2" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_c" value="3" id="q10_c_3"><label for="q10_c_3" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_c" value="4" id="q10_c_4"><label for="q10_c_4" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_c" value="5" id="q10_c_5"><label for="q10_c_5" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                            </tr>
+                             <!-- Row 4 -->
+                             <tr class="bg-white border-b">
+                                <td class="py-4 px-4 font-medium text-gray-900">I am concerned about the long-term reliability and the cost of replacing an EV's battery.</td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_d" value="1" id="q10_d_1"><label for="q10_d_1" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_d" value="2" id="q10_d_2"><label for="q10_d_2" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_d" value="3" id="q10_d_3"><label for="q10_d_3" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_d" value="4" id="q10_d_4"><label for="q10_d_4" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_d" value="5" id="q10_d_5"><label for="q10_d_5" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                            </tr>
+                             <!-- Row 5 -->
+                             <tr class="bg-white border-b">
+                                <td class="py-4 px-4 font-medium text-gray-900">Owning an EV is genuinely better for the environment than owning a gasoline car.</td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_e" value="1" id="q10_e_1"><label for="q10_e_1" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_e" value="2" id="q10_e_2"><label for="q10_e_2" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_e" value="3" id="q10_e_3"><label for="q10_e_3" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_e" value="4" id="q10_e_4"><label for="q10_e_4" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_e" value="5" id="q10_e_5"><label for="q10_e_5" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                            </tr>
+                             <!-- Row 6 -->
+                             <tr class="bg-white">
+                                <td class="py-4 px-4 font-medium text-gray-900">The overall cost of owning an EV, including fuel and maintenance, is lower than a gasoline car.</td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_f" value="1" id="q10_f_1"><label for="q10_f_1" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_f" value="2" id="q10_f_2"><label for="q10_f_2" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_f" value="3" id="q10_f_3"><label for="q10_f_3" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_f" value="4" id="q10_f_4"><label for="q10_f_4" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                                <td class="py-2 px-2 text-center"><input type="radio" name="q10_f" value="5" id="q10_f_5"><label for="q10_f_5" class="radio-label justify-center"><span class="radio-dot"></span></label></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+             <div class="form-question">
+                <label class="form-label">Q11: If you were to purchase or lease a new all-electric vehicle today, which of the following brands would you seriously consider? (Please select all that apply)</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <input type="checkbox" name="q11" value="tsla" id="q11_tsla"><label for="q11_tsla" class="checkbox-label"><span class="checkbox-tick"></span>Tesla</label>
+                    <input type="checkbox" name="q11" value="hyun" id="q11_hyun"><label for="q11_hyun" class="checkbox-label"><span class="checkbox-tick"></span>Hyundai</label>
+                    <input type="checkbox" name="q11" value="kia" id="q11_kia"><label for="q11_kia" class="checkbox-label"><span class="checkbox-tick"></span>Kia</label>
+                    <input type="checkbox" name="q11" value="ford" id="q11_ford"><label for="q11_ford" class="checkbox-label"><span class="checkbox-tick"></span>Ford</label>
+                    <input type="checkbox" name="q11" value="chev" id="q11_chev"><label for="q11_chev" class="checkbox-label"><span class="checkbox-tick"></span>Chevrolet</label>
+                    <input type="checkbox" name="q11" value="toyo" id="q11_toyo"><label for="q11_toyo" class="checkbox-label"><span class="checkbox-tick"></span>Toyota</label>
+                    <input type="checkbox" name="q11" value="vw" id="q11_vw"><label for="q11_vw" class="checkbox-label"><span class="checkbox-tick"></span>Volkswagen</label>
+                    <input type="checkbox" name="q11" value="niss" id="q11_niss"><label for="q11_niss" class="checkbox-label"><span class="checkbox-tick"></span>Nissan</label>
+                    <input type="checkbox" name="q11" value="bmw" id="q11_bmw"><label for="q11_bmw" class="checkbox-label"><span class="checkbox-tick"></span>BMW</label>
+                    <input type="checkbox" name="q11" value="merc" id="q11_merc"><label for="q11_merc" class="checkbox-label"><span class="checkbox-tick"></span>Mercedes-Benz</label>
+                    <input type="checkbox" name="q11" value="audi" id="q11_audi"><label for="q11_audi" class="checkbox-label"><span class="checkbox-tick"></span>Audi</label>
+                    <input type="checkbox" name="q11" value="volv" id="q11_volv"><label for="q11_volv" class="checkbox-label"><span class="checkbox-tick"></span>Volvo</label>
+                    <input type="checkbox" name="q11" value="pole" id="q11_pole"><label for="q11_pole" class="checkbox-label"><span class="checkbox-tick"></span>Polestar</label>
+                    <input type="checkbox" name="q11" value="rivi" id="q11_rivi"><label for="q11_rivi" class="checkbox-label"><span class="checkbox-tick"></span>Rivian</label>
+                    <input type="checkbox" name="q11" value="luci" id="q11_luci"><label for="q11_luci" class="checkbox-label"><span class="checkbox-tick"></span>Lucid</label>
+                    <div>
+                        <input type="checkbox" name="q11_other" id="q11_other"><label for="q11_other" class="checkbox-label"><span class="checkbox-tick"></span>Other</label>
+                        <input type="text" name="q11_other_text" class="form-input mt-2" placeholder="Please specify">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module D: The Purchase Journey & Influence -->
+            <div class="form-question">
+                 <label class="form-label">Q12: Have you ever driven or been a passenger in an all-electric vehicle (EV)?</label>
+                 <input type="radio" name="q12" value="driven" id="q12_a"><label for="q12_a" class="radio-label"><span class="radio-dot"></span>Yes, I have driven one</label>
+                 <input type="radio" name="q12" value="passenger" id="q12_b"><label for="q12_b" class="radio-label"><span class="radio-dot"></span>Yes, I have been a passenger in one</label>
+                 <input type="radio" name="q12" value="no" id="q12_c"><label for="q12_c" class="radio-label"><span class="radio-dot"></span>No, I have never been in an EV</label>
+            </div>
+
+            <div class="form-question" id="q13-container" style="display:none;">
+                <label for="q13" class="form-label">Q13: You mentioned you have been in an EV. Please briefly describe that experience. How, if at all, did it change your perception of electric vehicles?</label>
+                <textarea name="q13" id="q13" rows="4" class="form-textarea" placeholder="Please describe your experience..."></textarea>
+            </div>
+
+             <div class="form-question" id="q14-container" style="display:none;">
+                <label for="q14" class="form-label">Q14: What, if anything, would make you more likely to seek out an opportunity to test drive an electric vehicle?</label>
+                <textarea name="q14" id="q14" rows="4" class="form-textarea" placeholder="Please describe what would encourage you..."></textarea>
+            </div>
+
+            <!-- Module E: Policy, Incentives, & The Future -->
+            <div class="form-question">
+                 <label class="form-label">Q15: Before taking this survey, were you aware that the Government of Canada's $5,000 iZEV rebate program for new electric vehicles was paused in early 2025 and is not currently available?</label>
+                 <input type="radio" name="q15" value="yes" id="q15_a"><label for="q15_a" class="radio-label"><span class="radio-dot"></span>Yes, I was fully aware</label>
+                 <input type="radio" name="q15" value="partial" id="q15_b"><label for="q15_b" class="radio-label"><span class="radio-dot"></span>I had heard something about it, but wasn't sure of the details</label>
+                 <input type="radio" name="q15" value="no" id="q15_c"><label for="q15_c" class="radio-label"><span class="radio-dot"></span>No, I was not aware</label>
+            </div>
+
+            <div class="form-question">
+                 <label class="form-label">Q16: Imagine you are shopping for the exact same new electric vehicle, and you are presented with two offers from two different dealerships:</label>
+                 <div class="bg-gray-50 p-4 rounded-lg mb-4 border">
+                    <p class="font-semibold">Offer A:</p>
+                    <p>The vehicle's price is $55,000.</p>
+                 </div>
+                 <div class="bg-gray-50 p-4 rounded-lg mb-4 border">
+                    <p class="font-semibold">Offer B:</p>
+                    <p>The vehicle's price is $60,000, but it qualifies for a $5,000 instant government rebate applied at the time of purchase, making your final price $55,000.</p>
+                 </div>
+                 <label class="form-label mt-4">Which offer feels more appealing to you?</label>
+                 <input type="radio" name="q16" value="a" id="q16_a"><label for="q16_a" class="radio-label"><span class="radio-dot"></span>Offer A is more appealing</label>
+                 <input type="radio" name="q16" value="b" id="q16_b"><label for="q16_b" class="radio-label"><span class="radio-dot"></span>Offer B is more appealing</label>
+                 <input type="radio" name="q16" value="c" id="q16_c"><label for="q16_c" class="radio-label"><span class="radio-dot"></span>The two offers feel exactly the same to me</label>
+            </div>
+
+            <div class="form-question">
+                <label for="q17" class="form-label">Q17: The Canadian government has a regulation that will require all new passenger vehicles sold in Canada to be zero-emission by 2035. In your own words, how does knowing about this policy make you feel about your future vehicle choices and the automotive market in general?</label>
+                <textarea name="q17" id="q17" rows="4" class="form-textarea" placeholder="Please describe your feelings on this policy..."></textarea>
+            </div>
+            
+            <div class="mt-8 text-center">
+                 <button type="submit" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Submit Survey
+                </button>
+            </div>
+        </form>
+
+        <div id="submission-container" style="display:none;">
+            <h2 class="text-xl font-bold text-gray-900 mt-8 mb-4">Submission Data (Demonstration)</h2>
+            <pre id="submission-display"></pre>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Logic for Q9 label
+            const q8Radios = document.querySelectorAll('input[name="q8"]');
+            const q9Label = document.getElementById('q9_label');
+            const q8Labels = {
+                very_unlikely: "very unlikely",
+                somewhat_unlikely: "somewhat unlikely",
+                neutral: "neutral",
+                somewhat_likely: "somewhat likely",
+                very_likely: "very likely"
+            };
+            q8Radios.forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    const selectedValue = event.target.value;
+                    const labelText = q8Labels[selectedValue] || "neutral";
+                    q9Label.textContent = `Q9: You indicated you are ${labelText} to consider an all-electric vehicle. In your own words, what are the main reasons for your answer?`;
+                });
+            });
+
+            // Logic for showing/hiding Q13 and Q14
+            const q12Radios = document.querySelectorAll('input[name="q12"]');
+            const q13Container = document.getElementById('q13-container');
+            const q14Container = document.getElementById('q14-container');
+            q12Radios.forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    const val = event.target.value;
+                    if (val === 'driven' || val === 'passenger') {
+                        q13Container.style.display = 'block';
+                        q14Container.style.display = 'none';
+                    } else { // 'no'
+                        q13Container.style.display = 'none';
+                        q14Container.style.display = 'block';
+                    }
+                });
+            });
+
+
+            // Form submission logic
+            const form = document.getElementById('ev-survey-form');
+            const submissionContainer = document.getElementById('submission-container');
+            const submissionDisplay = document.getElementById('submission-display');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const data = {};
+
+                // Handle regular inputs and checked radio buttons
+                for (const [key, value] of formData.entries()) {
+                    if (key.startsWith('q11_') && key !== 'q11_other_text') {
+                        continue; // Skip individual checkbox keys, handle them below
+                    }
+                    data[key] = value;
+                }
+
+                // Specifically handle checkboxes for Q11
+                const q11brands = [];
+                const q11checkboxes = document.querySelectorAll('input[name="q11"]:checked');
+                q11checkboxes.forEach(cb => {
+                    q11brands.push(cb.value);
+                });
+                data['q11_brands_considered'] = q11brands;
+
+
+                submissionDisplay.textContent = JSON.stringify(data, null, 2);
+                submissionContainer.style.display = 'block';
+                
+                // Scroll to the results
+                submissionContainer.scrollIntoView({ behavior: 'smooth' });
+
+                alert('Thank you! Your submission data is displayed below for demonstration.');
+            });
+        });
+    </script>
+</body>
+</html>
